@@ -1,3 +1,5 @@
+mod fetch;
+
 fn main() {
-    println!("Hello, world!");
+    fetch::read_rom_lines("examples/add.asm");
 }
