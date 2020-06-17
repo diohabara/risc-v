@@ -16,6 +16,8 @@ enum InstKind {
     LD,
     ST,
     HLT,
+}
+enum RegKind {
     REG0,
     REG1,
     REG2,
