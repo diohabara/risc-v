@@ -2,10 +2,14 @@
 
 This repository is an implementation of a subset of RISC-V.
 
+Now, I am making RV32I.
+
 ## Overview
 
 ![CPU design](docs/CPU%20design.png)
 
 ## ISA
 
-This repository follow the [unprivileged spec](https
+This repository follow the [unprivileged spec](https://riscv.org/specifications/isa-spec-pdf/)
+
+
