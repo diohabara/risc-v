@@ -1,5 +1,5 @@
 [package]
-name = "emulator"
+name = "risc-v emulator"
 version = "0.1.0"
 authors = ["Kadoi Takemaru <kadoitakemaru0902@g.ecc.u-tokyo.ac.jp>"]
 edition = "2018"
