@@ -74,7 +74,6 @@ enum InstructionFormat {
     B,
     U,
     J,
-    C, // CSR
     O, // Others
 }
 
@@ -138,4 +137,57 @@ fn get_instruction_name(instruction: &Instruction) -> &'static str {
         Instruction::ECALL => "ECALL",
         Instruction::EBREAK => "EBREAK",
     }
+}
+
+fn get_instruction_format(instruction: &Instruction) -> InstructionFormat {
+    match instruction {
+        Instruction::BEQ
+        | Instruction::BNE
+        | Instruction::BLT
+        | Instruction::BGE
+        | Instruction::BLTU
+        | Instruction::BGEU => InstructionFormat::B,
+        Instruction::LB
+        | Instruction::LH
+        | Instruction::LW
+        | Instruction::LBU
+        | Instruction::LHU
+        | Instruction::ADDI
+        | Instruction::SLTI
+        | Instruction::SLTIU
+        | Instruction::JALR
+        | Instruction::XORI
+        | Instruction::ORI
+        | Instruction::ANDI
+        | Instruction::XORI
+        | Instruction::CSRRC
+        | Instruction::CSRRCI
+        | Instruction::CSRRS
+        | Instruction::CSRRSI
+        | Instruction::CSRRW
+        | Instruction::CSRRWI
+        | Instruction::ECALL
+        | Instruction::EBREAK => InstructionFormat::I,
+        Instruction::JAL => InstructionFormat::J,
+        Instruction::SLLI
+        | Instruction::SRLI
+        | Instruction::SRAI
+        | Instruction::ADD
+        | Instruction::SUB
+        | Instruction::SLL
+        | Instruction::SLT
+        | Instruction::SLTU
+        | Instruction::XOR
+        | Instruction::SRA
+        | Instruction::SRL
+        | Instruction::OR
+        | Instruction::AND => InstructionFormat::R,
+        Instruction::SW | Instruction::SH | Instruction::SB => InstructionFormat::S,
+        AUIPC | LUI => InstructionFormat::U,
+        Instruction::FENCE | Instruction::FENCE_I => InstructionFormat::O,
+    }
+}
+
+impl Cpu {
+    pub fn new() -> Self {}
 }
