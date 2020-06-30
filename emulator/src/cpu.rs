@@ -189,5 +189,94 @@ fn get_instruction_format(instruction: &Instruction) -> InstructionFormat {
 }
 
 impl Cpu {
-    pub fn new() -> Self {}
+    pub fn new() -> Self {
+        Cpu {
+            x: [0; 32],
+            pc: 0,
+            csr: [0; CSR_CAPACITY],
+            memory: [0; MEMORY_CAPACITY],
+        }
+    }
+
+    pub fn run_test(&mut self, data: Vec<u8>) {
+        for i in 0..data.len() {
+            self.memory[i] = data[i];
+        }
+        self.pc = 0;
+        loop {
+            let terminate = match self.load_word(self.pc) {
+                0x0000_0073 => true,
+                _ => false,
+            };
+            self.tick();
+            if terminate {
+                match self.x[10] {
+                    0 => println!("Test passed!"),
+                    _ => println!("Test failed..."),
+                };
+                break;
+            }
+        }
+    }
+
+    pub fn tick(&mut self) {
+        let word = self.fetch();
+        let instruction = self.decode(word);
+        println!("PC:{:08x}, Word:{:08x}, Inst:{}"
+                 self.pc.wrapping_sub(4), word,
+                 get_instruction_name(&instruction));
+        self.operate(word, instruction);
+    }
+
+    fn fetch(&mut self) -> u32 {
+        let word = self.load_word(self.pc);
+        self.pc = self.pc.wrapping_add(4);
+        word
+    }
+
+    fn load_word(&self, address: u32) -> u32 {
+        ((self.memory[address as usize + 3] as u32) << 24)
+            | ((self.memory[address as usize + 2] as u32) << 16)
+            | ((self.memory[address as usize + 1] as u32) << 8)
+            | (self.memory[address as usize])
+    }
+
+    fn load_halfword(&self, address: u32) -> u16 {
+        ((self.memory[address as usize + 1] as u32) << 8) | (self.memory[address as usize])
+    }
+
+    fn load_byte(&self, address: u32) -> u8 {
+        (self.memory[address as usize])
+    }
+
+    fn store_word(&self, address: u32, value: u32) {
+        // 0xff = 1111_1111
+        self.memory[address as usize] = (value & 0xff) as u8;
+        self.memory[address as usize + 1] = ((value >> 8) & 0xff) as u8;
+        self.memory[address as usize + 2] = ((value >> 16) & 0xff) as u8;
+        self.memory[address as usize + 3] = ((value >> 24) & 0xff) as u8;
+    }
+
+    fn store_halfword(&self, address: u32, value: u16) {
+        self.memory[address as usize] = (value & 0xff) as u8;
+        self.memory[address as usize + 1] = ((value >> 8) & 0xff) as u8;
+    }
+
+    fn store_byte(&self, address: u32, value: u8) {
+        self.memory[address as usize] = value;
+    }
+
+    fn decode(&self, word: u32) -> Instruction {
+        let opcode = word & 0x7f; // [6:0]
+        let funct3 = (word >> 12) & 0x7; // [14:12]
+        let funct7 = (word >> 25) & 0x7f; // [31:25]
+
+        // B type
+        // I type
+        // S type
+        // B type
+        // U type
+        // J type
+        // Other types
+    }
 }
