@@ -10,7 +10,7 @@ Now, I am making RV32I.
 
 ## ISA
 
-This repository follow the [unprivileged spec](https://riscv.org/specifications/isa-spec-pdf/)
+This repository follows the [unprivileged spec](https://riscv.org/specifications/isa-spec-pdf/)
 
 ## Emulator
 
