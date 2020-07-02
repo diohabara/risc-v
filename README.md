@@ -1,6 +1,6 @@
 # RISC-V CPU
 
-This repository is an implementation of a subset of RISC-V.
+This repository is an implementation of subset of RISC-V.
 
 Now, I am making RV32I.
 
