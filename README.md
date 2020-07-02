@@ -15,8 +15,9 @@ This repository follow the [unprivileged spec](https://riscv.org/specifications/
 
 ## Emulator
 
-![.github/workflows/emulator.yml](https://github.com/diohabara/risc-v/workflows/.github/workflows/emulator.yml/badge.svg)
-
+![CI](https://github.com/diohabara/risc-v/workflows/CI/badge.svg)
 
 Written in Rust.
+
+- [ ] RV32I
 
