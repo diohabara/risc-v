@@ -15,7 +15,6 @@ jobs:
         with:
           command: build
           args: --verbose --all-features
-jobs:
   clippy_check:
     runs-on: ubuntu-latest
     steps:
