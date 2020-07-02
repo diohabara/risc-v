@@ -4,9 +4,9 @@ on: push
 
 jobs:
   cargo:
+    runs-on: ubuntu-latest
     env:
       working-directory: ./emulator
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions-rs/toolchain@v1
@@ -16,21 +16,8 @@ jobs:
         with:
           command: build
           args: --verbose --all-features
-        working-directory: ${{env.working-directory}}
       - uses: actions-rs/cargo@v1
         with:
           command: test
           args: --verbose --all-features
-        working-directory: ${{env.working-directory}}
-  clippy_check:
-    env:
-      working-directory: ./emulator
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: rustup component add clippy
-      - uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-features
         working-directory: ${{env.working-directory}}
