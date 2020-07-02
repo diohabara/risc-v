@@ -20,4 +20,3 @@ jobs:
         with:
           command: test
           args: --verbose --all-features
-        working-directory: ${{env.working-directory}}
