@@ -13,3 +13,10 @@ Now, I am making RV32I.
 This repository follow the [unprivileged spec](https://riscv.org/specifications/isa-spec-pdf/)
 
 
+## Emulator
+
+![.github/workflows/emulator.yml](https://github.com/diohabara/risc-v/workflows/.github/workflows/emulator.yml/badge.svg)
+
+
+Written in Rust.
+
