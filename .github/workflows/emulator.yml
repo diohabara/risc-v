@@ -8,15 +8,15 @@ jobs:
     env:
       working-directory: ./emulator
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
       - uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --verbose --all-features
+          args: --verbose
       - uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --verbose --all-features
+          args: --verbose
