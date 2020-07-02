@@ -12,7 +12,6 @@ Now, I am making RV32I.
 
 This repository follow the [unprivileged spec](https://riscv.org/specifications/isa-spec-pdf/)
 
-
 ## Emulator
 
 ![CI](https://github.com/diohabara/risc-v/workflows/CI/badge.svg)
