@@ -4,7 +4,6 @@ on: push
 
 jobs:
   cargo:
-    name: RISC-V Emulator
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
