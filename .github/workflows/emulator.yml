@@ -14,3 +14,6 @@ jobs:
         with:
           toolchain: stable
       - run: cargo build --release --all-features
+        working-directory: ${{env.working-directory}}
+      - run: cargo test --verbose --all-features
+        working-directory: ${{env.working-directory}}
