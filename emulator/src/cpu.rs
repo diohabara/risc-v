@@ -282,16 +282,45 @@ impl Cpu {
                 6 => Instruction::BLTU,
                 7 => Instruction::BGEU,
                 _ => {
-                    println!("Branch funct3: RV32I does not support {03:b}.", funct3);
-                    panic!();
+                    error_funct3(funct3);
                 }
             };
         }
         // I type
+        if opcode == 0x03 {
+            return match funct3 {
+                0 => Instruction::LB,
+                1 => Instruction::LH,
+                2 => Instruction::LW,
+                4 => Instruction::LBU,
+                5 => Instruction::LHU,
+                _ => {
+                    error_funct3(funct3);
+                }
+            };
+        }
+        if opcode == 0x13 {
+            return match funct3 {
+                0 => Instruction::ADDI,
+                2 => Instruction::SLTI,
+                3 => Instruction::SLTIU,
+                4 => Instruction::XORI,
+                6 => Instruction::ORI,
+                7 => Instruction::ANDI,
+                _ => {
+                    error_funct3(funct3);
+                }
+            };
+        }
         // S type
         // B type
         // U type
         // J type
         // Other types
     }
+}
+
+fn error_funct3(funct3: u32) {
+    println!("Unknown funct3: RV32I does not support {03:b}...", funct3);
+    panic!();
 }
