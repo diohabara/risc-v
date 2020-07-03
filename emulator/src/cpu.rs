@@ -350,6 +350,13 @@ impl Cpu {
             };
         }
         // S type
+        if opcode == 0x23 {
+            return match funct3 {
+                0 => Instruction::SB,
+                1 => Instruction::SH,
+                2 => Instruction::SW,
+            };
+        }
         // B type
         if opcode == 0x63 {
             return match funct3 {
