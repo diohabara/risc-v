@@ -167,7 +167,9 @@ fn get_instruction_format(instruction: &Instruction) -> InstructionFormat {
         | Instruction::CSRRSI
         | Instruction::CSRRCI
         | Instruction::ECALL
-        | Instruction::EBREAK => InstructionFormat::I,
+        | Instruction::EBREAK
+        | Instruction::FENCE
+        | Instruction::FENCE_I => InstructionFormat::I,
         Instruction::JAL => InstructionFormat::J,
         Instruction::SLLI
         | Instruction::SRLI
@@ -183,8 +185,7 @@ fn get_instruction_format(instruction: &Instruction) -> InstructionFormat {
         | Instruction::OR
         | Instruction::AND => InstructionFormat::R,
         Instruction::SW | Instruction::SH | Instruction::SB => InstructionFormat::S,
-        AUIPC | LUI => InstructionFormat::U,
-        Instruction::FENCE | Instruction::FENCE_I => InstructionFormat::O,
+        Instruction::AUIPC | Instruction::LUI => InstructionFormat::U,
     }
 }
 
@@ -271,6 +272,7 @@ impl Cpu {
         let opcode = word & 0x7f; // [6:0]
         let funct3 = (word >> 12) & 0x7; // [14:12]
         let funct7 = (word >> 25) & 0x7f; // [31:25]
+        let imm12 = (word >> 20) & 0x7ff; // [31:20]
 
         // B type
         if opcode == 0x63 {
@@ -310,12 +312,23 @@ impl Cpu {
         }
         if opcode == 0x73 {
             return match funct3 {
+                0 => match imm12 {
+                    0 => Instruction::ECALL,
+                    1 => Instruction::EBREAK,
+                },
                 1 => Instruction::CSRRW,
                 2 => Instruction::CSRRS,
                 3 => Instruction::CSRRC,
                 5 => Instruction::CSRRWI,
                 6 => Instruction::CSRRSI,
                 7 => Instruction::CSRRCI,
+                _ => error_funct3(funct3),
+            };
+        }
+        if opcode == 0x0f {
+            return match funct3 {
+                0 => Instruction::FENCE,
+                1 => Instruction::FENCE_I,
                 _ => error_funct3(funct3),
             };
         }
