@@ -7,6 +7,7 @@ pub struct Cpu {
     csr: [u32; CSR_CAPACITY],
     memory: [u8; MEMORY_CAPACITY],
 }
+
 enum Instruction {
     // Integer Computational Instructions
     /// Integer Register-Immediate Instructions
