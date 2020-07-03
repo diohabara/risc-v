@@ -266,12 +266,27 @@ impl Cpu {
         self.memory[address as usize] = value;
     }
 
+    // look at P130
     fn decode(&self, word: u32) -> Instruction {
         let opcode = word & 0x7f; // [6:0]
         let funct3 = (word >> 12) & 0x7; // [14:12]
         let funct7 = (word >> 25) & 0x7f; // [31:25]
 
         // B type
+        if opcode == 0x63 {
+            return match funct3 {
+                0 => Instruction::BEQ,
+                1 => Instruction::BNE,
+                4 => Instruction::BLT,
+                5 => Instruction::BGE,
+                6 => Instruction::BLTU,
+                7 => Instruction::BGEU,
+                _ => {
+                    println!("Branch funct3: RV32I does not support {03:b}.", funct3);
+                    panic!();
+                }
+            };
+        }
         // I type
         // S type
         // B type
