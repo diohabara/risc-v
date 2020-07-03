@@ -160,12 +160,12 @@ fn get_instruction_format(instruction: &Instruction) -> InstructionFormat {
         | Instruction::ORI
         | Instruction::ANDI
         | Instruction::XORI
-        | Instruction::CSRRC
-        | Instruction::CSRRCI
-        | Instruction::CSRRS
-        | Instruction::CSRRSI
         | Instruction::CSRRW
+        | Instruction::CSRRS
+        | Instruction::CSRRC
         | Instruction::CSRRWI
+        | Instruction::CSRRSI
+        | Instruction::CSRRCI
         | Instruction::ECALL
         | Instruction::EBREAK => InstructionFormat::I,
         Instruction::JAL => InstructionFormat::J,
@@ -281,9 +281,7 @@ impl Cpu {
                 5 => Instruction::BGE,
                 6 => Instruction::BLTU,
                 7 => Instruction::BGEU,
-                _ => {
-                    error_funct3(funct3);
-                }
+                _ => error_funct3(funct3),
             };
         }
         // I type
@@ -307,9 +305,18 @@ impl Cpu {
                 4 => Instruction::XORI,
                 6 => Instruction::ORI,
                 7 => Instruction::ANDI,
-                _ => {
-                    error_funct3(funct3);
-                }
+                _ => error_funct3(funct3),
+            };
+        }
+        if opcode == 0x73 {
+            return match funct3 {
+                1 => Instruction::CSRRW,
+                2 => Instruction::CSRRS,
+                3 => Instruction::CSRRC,
+                5 => Instruction::CSRRWI,
+                6 => Instruction::CSRRSI,
+                7 => Instruction::CSRRCI,
+                _ => error_funct3(funct3),
             };
         }
         // S type
