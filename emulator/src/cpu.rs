@@ -276,6 +276,33 @@ impl Cpu {
         let imm12 = (word >> 20) & 0x7ff; // [31:20]
 
         // R type
+        if opcode == 0x13 {
+            return match funct3 {
+                0 => Instruction::SLLI,
+                5 => match funct7 {
+                    0x00 => Instruction::SRLI,
+                    0x20 => Instruction::SRAI,
+                },
+            };
+        }
+        if opcode == 0x33 {
+            return match funct3 {
+                0 => match funct7 {
+                    0x00 => Instruction::ADD,
+                    0x20 => Instruction::SUB,
+                },
+                1 => Instruction::SLL,
+                2 => Instruction::SLT,
+                3 => Instruction::SLTU,
+                4 => Instruction::XOR,
+                5 => match funct7 {
+                    0x00 => Instruction::SRL,
+                    0x20 => Instruction::SRA,
+                },
+                6 => Instruction::OR,
+                7 => Instruction::AND,
+            };
+        }
         // I type
         if opcode == 0x03 {
             return match funct3 {
