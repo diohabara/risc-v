@@ -185,7 +185,7 @@ fn get_instruction_format(instruction: &Instruction) -> InstructionFormat {
         | Instruction::BGE
         | Instruction::BLTU
         | Instruction::BGEU => InstructionFormat::B,
-        Instruction::AUIPC | Instruction::LUI => InstructionFormat::U,
+        Instruction::LUI | Instruction::AUIPC => InstructionFormat::U,
         Instruction::JAL => InstructionFormat::J,
     }
 }
@@ -304,6 +304,9 @@ impl Cpu {
             };
         }
         // I type
+        if opcode == 0x67 {
+            return Instruction::JALR;
+        }
         if opcode == 0x03 {
             return match funct3 {
                 0 => Instruction::LB,
@@ -370,8 +373,16 @@ impl Cpu {
             };
         }
         // U type
+        if opcode == 0x37 {
+            return Instruction::LUI;
+        }
+        if opcode == 0x17 {
+            return Instruction::AUIPC;
+        }
         // J type
-        // Other types
+        if opcode == 0x6f {
+            return Instruction::JAL;
+        }
     }
 }
 
