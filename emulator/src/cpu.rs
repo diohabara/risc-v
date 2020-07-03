@@ -142,12 +142,19 @@ fn get_instruction_name(instruction: &Instruction) -> &'static str {
 
 fn get_instruction_format(instruction: &Instruction) -> InstructionFormat {
     match instruction {
-        Instruction::BEQ
-        | Instruction::BNE
-        | Instruction::BLT
-        | Instruction::BGE
-        | Instruction::BLTU
-        | Instruction::BGEU => InstructionFormat::B,
+        Instruction::SLLI
+        | Instruction::SRLI
+        | Instruction::SRAI
+        | Instruction::ADD
+        | Instruction::SUB
+        | Instruction::SLL
+        | Instruction::SLT
+        | Instruction::SLTU
+        | Instruction::XOR
+        | Instruction::SRA
+        | Instruction::SRL
+        | Instruction::OR
+        | Instruction::AND => InstructionFormat::R,
         Instruction::LB
         | Instruction::LH
         | Instruction::LW
@@ -171,22 +178,15 @@ fn get_instruction_format(instruction: &Instruction) -> InstructionFormat {
         | Instruction::EBREAK
         | Instruction::FENCE
         | Instruction::FENCE_I => InstructionFormat::I,
-        Instruction::JAL => InstructionFormat::J,
-        Instruction::SLLI
-        | Instruction::SRLI
-        | Instruction::SRAI
-        | Instruction::ADD
-        | Instruction::SUB
-        | Instruction::SLL
-        | Instruction::SLT
-        | Instruction::SLTU
-        | Instruction::XOR
-        | Instruction::SRA
-        | Instruction::SRL
-        | Instruction::OR
-        | Instruction::AND => InstructionFormat::R,
         Instruction::SW | Instruction::SH | Instruction::SB => InstructionFormat::S,
+        Instruction::BEQ
+        | Instruction::BNE
+        | Instruction::BLT
+        | Instruction::BGE
+        | Instruction::BLTU
+        | Instruction::BGEU => InstructionFormat::B,
         Instruction::AUIPC | Instruction::LUI => InstructionFormat::U,
+        Instruction::JAL => InstructionFormat::J,
     }
 }
 
@@ -275,18 +275,7 @@ impl Cpu {
         let funct7 = (word >> 25) & 0x7f; // [31:25]
         let imm12 = (word >> 20) & 0x7ff; // [31:20]
 
-        // B type
-        if opcode == 0x63 {
-            return match funct3 {
-                0 => Instruction::BEQ,
-                1 => Instruction::BNE,
-                4 => Instruction::BLT,
-                5 => Instruction::BGE,
-                6 => Instruction::BLTU,
-                7 => Instruction::BGEU,
-                _ => error_funct3(funct3),
-            };
-        }
+        // R type
         // I type
         if opcode == 0x03 {
             return match funct3 {
@@ -335,6 +324,17 @@ impl Cpu {
         }
         // S type
         // B type
+        if opcode == 0x63 {
+            return match funct3 {
+                0 => Instruction::BEQ,
+                1 => Instruction::BNE,
+                4 => Instruction::BLT,
+                5 => Instruction::BGE,
+                6 => Instruction::BLTU,
+                7 => Instruction::BGEU,
+                _ => error_funct3(funct3),
+            };
+        }
         // U type
         // J type
         // Other types
