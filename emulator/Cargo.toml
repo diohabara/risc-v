@@ -1,9 +1,5 @@
 [package]
 name = "riscv_emulator"
 version = "0.1.0"
-authors = ["Kadoi Takemaru <kadoitakemaru0902@g.ecc.u-tokyo.ac.jp>"]
+authors = ["Kadoi Takemaru"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
