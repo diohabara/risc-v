@@ -384,6 +384,18 @@ impl Cpu {
             return Instruction::JAL;
         }
     }
+
+    fn operate(&mut self, word: u32, instruction: Instruction) {
+        let instruction_format = get_instruction_format(&instruction);
+        match instruction_format {
+            InstructionFormat::R => {}
+            InstructionFormat::I => {}
+            InstructionFormat::S => {}
+            InstructionFormat::B => {}
+            InstructionFormat::U => {}
+            InstructionFormat::J => {}
+        }
+    }
 }
 
 fn error_funct3(funct3: u32) {
